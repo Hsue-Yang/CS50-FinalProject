@@ -12,4 +12,4 @@ def hello2(request, username):
 
 def hello3(request, username):
     now = datetime.now()
-    return render(request, '/shopping/templates/index.html', locals())
+    return render(request, 'index.html', locals()) # related to /templates
