@@ -3,17 +3,15 @@
   <head>
     <meta charset="UTF-8" />
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-    <title>{% block title %}比價神器{% endblock %}</title>
+    <title>
+      {% block title %}比價神器{% endblock %}
+    </title>
     <!-- Bootstrap CSS -->
-    <link
-      href="https://cdnjs.cloudflare.com/ajax/libs/bootstrap/5.3.0/css/bootstrap.min.css"
-      rel="stylesheet"
-    />
+    <link href="https://cdnjs.cloudflare.com/ajax/libs/bootstrap/5.3.0/css/bootstrap.min.css"
+          rel="stylesheet" />
     <!-- Font Awesome -->
-    <link
-      href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css"
-      rel="stylesheet"
-    />
+    <link href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css"
+          rel="stylesheet" />
     <!-- 自定義CSS -->
     <style>
       :root {
@@ -206,15 +204,13 @@
     <!-- 導航欄 -->
     <nav class="navbar navbar-expand-lg navbar-light fixed-top">
       <div class="container">
-        <a class="navbar-brand fw-bold text-primary" href="#">
+        <a class="navbar-brand fw-bold text-primary" href="/">
           <i class="fas fa-search-dollar me-2"></i>比價神器
         </a>
-        <button
-          class="navbar-toggler"
-          type="button"
-          data-bs-toggle="collapse"
-          data-bs-target="#navbarNav"
-        >
+        <button class="navbar-toggler"
+                type="button"
+                data-bs-toggle="collapse"
+                data-bs-target="#navbarNav">
           <span class="navbar-toggler-icon"></span>
         </button>
         <div class="collapse navbar-collapse" id="navbarNav">
@@ -225,7 +221,7 @@
               </a>
             </li>
             <li class="nav-item">
-              <a class="nav-link" href="/search">
+              <a class="nav-link" href="/shopping/search">
                 <i class="fas fa-search me-1"></i>搜尋商品
               </a>
             </li>
@@ -233,10 +229,10 @@
         </div>
       </div>
     </nav>
-
     <!-- 主要內容 -->
-    <main style="margin-top: 50px">{% block content %}{% endblock %}</main>
-
+    <main style="margin-top: 50px">
+      {% block content %}{% endblock %}
+    </main>
     <!-- 頁腳 -->
     <footer class="bg-dark text-white text-center py-4 mt-5">
       <div class="container">
@@ -244,12 +240,10 @@
         <p class="mb-0">讓購物更聰明，讓比價更簡單</p>
       </div>
     </footer>
-
     <!-- Bootstrap JS -->
     <script src="https://cdnjs.cloudflare.com/ajax/libs/bootstrap/5.3.0/js/bootstrap.bundle.min.js"></script>
     <!-- jQuery -->
     <script src="https://cdnjs.cloudflare.com/ajax/libs/jquery/3.7.0/jquery.min.js"></script>
-
     {% block extra_js %}{% endblock %}
   </body>
 </html>
