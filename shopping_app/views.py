@@ -3,27 +3,30 @@ from django.core.paginator import Paginator
 from .models import Website
 from typing import List, Dict, Any
 from django.core.cache import cache
+from django.contrib.auth.forms import UserCreationForm
+from django.shortcuts import redirect
+from django.contrib.auth import authenticate, login, logout
+from django.contrib.auth.decorators import login_required
 import requests
 import time
 import logging
 logger = logging.getLogger(__name__)
 # request -> response
-def home(request):
-    return render(request, 'home.html', {
-        'title': 'Home Page',
-        'message': 'Welcome to the Shopping App!'
-    })
 
+@login_required(login_url='login')
 def index(request):
     fake_websites = [
-        {'id': 1, 'name': 'PChome', 'url': 'https://www.pchome.com.tw', 'is_active': True},
-        {'id': 2, 'name': 'momo購物網', 'url': 'https://www.momoshop.com.tw', 'is_active': True},
-        {'id': 3, 'name': '蝦皮商城', 'url': 'https://shopee.tw', 'is_active': True},
-        {'id': 4, 'name': 'Yahoo購物中心', 'url': 'https://tw.buy.yahoo.com', 'is_active': True},
-        {'id': 5, 'name': 'ETMall東森購物', 'url': 'https://www.etmall.com.tw', 'is_active': True},
-        {'id': 6, 'name': '森森購物網', 'url': 'https://www.u-mall.com.tw', 'is_active': True},
+        {'id': 1, 'name': 'PChome', 'url': 'https://www.pchome.com.tw', 'api_endpoint':'https://ecshweb.pchome.com.tw/search/v3.3/all/results?q={query}','is_active': True},
+        {'id': 2, 'name': 'momo購物網', 'url': 'https://www.momoshop.com.tw','api_endpoint':'https://m.momoshop.com.tw/mosearch/{query}.html', 'is_active': True},
+        {'id': 3, 'name': '蝦皮商城', 'url': 'https://shopee.tw', 'api_endpoint':'https://shopee.tw/search?keyword={query}','is_active': True},
+        {'id': 4, 'name': 'Yahoo購物中心', 'url': 'https://tw.buy.yahoo.com', 'api_endpoint':'https://tw.search.buy.yahoo.com/search/shopping/product?p={query}','is_active': True},
+        {'id': 5, 'name': 'ETMall東森購物', 'url': 'https://www.etmall.com.tw', 'api_endpoint':'https://www.etmall.com.tw/Search?keyword={query}','is_active': True},
+        {'id': 6, 'name': '森森購物網', 'url': 'https://www.u-mall.com.tw', 'api_endpoint':'https://www.u-mall.com.tw/Search?keyword={query}','is_active': True},
     ]
-    
+    websites = Website.objects.filter(is_active=True).values('id', 'name', 'url', 'api_endpoint')
+    if websites.exists():
+        # 如果資料庫中有網站資料，則使用資料庫中的資料
+        fake_websites = list(websites)
     # 創建假精選商品
     fake_featured_products = [
         {
@@ -84,6 +87,7 @@ def index(request):
     }
     return render(request, 'index.html', context)
 
+@login_required(login_url='login')
 def search(request):
     # 取得所有啟用的網站資料供篩選使用
     websites = Website.objects.filter(is_active=True)
@@ -135,6 +139,36 @@ def search(request):
             context['error_message'] = "搜尋過程中發生錯誤，請稍後再試。"
     
     return render(request, 'search.html', context)
+
+def login(request):
+    if request.method == 'POST':
+        username = request.POST.get('username')
+        password = request.POST.get('password')
+        user = authenticate(request, username=username, password=password)
+        if user is not None:
+            login(request, user)
+            return redirect('index')
+        else:
+            return render(request, 'login.html', {'errors': '無效的使用者名稱或密碼'})    
+    else:
+        return render(request, 'login.html')
+
+def logout(request):
+    logout(request)
+    return redirect('login')  # 登出後重定向到首頁
+
+def register(request):
+    if request.method == 'POST':
+        form = UserCreationForm(request.POST)
+        if form.is_valid():
+            form.save()
+            return redirect('login')  # 註冊成功後重定向到登入頁面
+        else:
+            return render(request, 'register.html', {'form': form, 'errors':form.errors})
+    else:
+        form = UserCreationForm()
+        context = {'form': form}
+        return render(request, 'register.html', context)
 
 class ProductSearchService:
     """商品搜尋服務類"""

@@ -23,5 +23,6 @@ from django.conf.urls.static import static
 urlpatterns = [
     path('admin/', admin.site.urls),
     path('shopping/', include('shopping_app.urls')),
+    path('shopping/', include('django.contrib.auth.urls')),  # 包含登入登出功能
     path('', RedirectView.as_view(url='/shopping/', permanent=True)),
 ] + static(settings.STATIC_URL, document_root=settings.STATIC_ROOT)

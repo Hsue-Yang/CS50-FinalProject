@@ -215,16 +215,32 @@
         </button>
         <div class="collapse navbar-collapse" id="navbarNav">
           <ul class="navbar-nav ms-auto">
-            <li class="nav-item">
-              <a class="nav-link" href="/">
-                <i class="fas fa-home me-1"></i>首頁
-              </a>
-            </li>
-            <li class="nav-item">
-              <a class="nav-link" href="/shopping/search">
-                <i class="fas fa-search me-1"></i>搜尋商品
-              </a>
-            </li>
+            {% if user.is_authenticated %}
+              <li class="nav-item">
+                <a class="nav-link" href="{% url 'index' %}">
+                  <i class="fas fa-home me-1"></i>首頁
+                </a>
+              </li>
+              <li class="nav-item">
+                <a class="nav-link" href="{% url 'search' %}">
+                  <i class="fas fa-search me-1"></i>搜尋商品
+                </a>
+              </li>
+              <li class="nav-item">
+                <form method="post" action="{% url 'logout' %}">
+                  {% csrf_token %}
+                  <button type="submit" class="nav-link" style="margin-left:16px">
+                    <i class="fas fa-sign-out-alt"></i>登出
+                  </button>
+                </form>
+              </li>
+            {% else %}
+              <li class="nav-item">
+                <a class="nav-link" href="{% url 'login' %}">
+                  <i class="fas fa-sign-in-alt me-1"></i>登入
+                </a>
+              </li>
+            {% endif %}
           </ul>
         </div>
       </div>
