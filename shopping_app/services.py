@@ -1,132 +1,107 @@
-# management/commands/add_default_websites.py
-# 檔案路徑: your_app/management/commands/add_default_websites.py
+import requests
+from bs4 import BeautifulSoup
+from .scraper import momo
+import json
+import re
+from urllib.parse import quote
 
-from django.core.management.base import BaseCommand
-from django.db import transaction
-from shopping_app.models import Website  # 請根據您的app名稱調整
+def crawl_momo(keyword):
+    url = f"https://www.momoshop.com.tw/search/searchShop.jsp?keyword={keyword}"
+    headers = {-"Agent": "Mozilla/5.0"}
+    res = requests.get(url, headers=headers)
+    soup = BeautifulSoup(res.text, "html.parser")
+    products=[]
+    if res.status_code != 200:
+        return []
 
-class Command(BaseCommand):
-    help = '新增預設的購物網站資料'
+    for item in soup.select(".prdListArea .listArea li"):
+        title_tag = item.select_one(".prdName")
+        price_tag = item.select_one(".price")
 
-    def handle(self, *args, **options):
-        default_websites = [
-            {
-                'name': 'PChome',
-                'url': 'https://www.pchome.com.tw',
-                'api_endpoint': 'https://24h.pchome.com.tw/search',
-                'is_active': True,
-                'search_delay': 1.0,
-                'max_results': 50,
-                'headers': {
-                    'User-Agent': 'Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36',
-                    'Accept': 'application/json',
-                },
-                'search_params': {
-                    'q': '',  # 搜尋關鍵字參數名稱
-                    'page': 1,
-                    'size': 20,
-                }
-            },
-            {
-                'name': 'momo購物網',
-                'url': 'https://www.momoshop.com.tw',
-                'api_endpoint': 'https://m.momoshop.com.tw/search.momo',
-                'is_active': True,
-                'search_delay': 1.2,
-                'max_results': 50,
-                'headers': {
-                    'User-Agent': 'Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36',
-                    'Accept': 'application/json',
-                },
-                'search_params': {
-                    'keyword': '',  # momo使用keyword參數
-                    'page': 1,
-                    'size': 20,
-                }
-            },
-            {
-                'name': '蝦皮商城',
-                'url': 'https://shopee.tw',
-                'api_endpoint': 'https://shopee.tw/api/v4/search/search_items',
-                'is_active': True,
-                'search_delay': 1.5,
-                'max_results': 50,
-                'headers': {
-                    'User-Agent': 'Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36',
-                    'Accept': 'application/json',
-                },
-                'search_params': {
-                    'keyword': '',
-                    'limit': 20,
-                    'offset': 0,
-                }
-            },
-            {
-                'name': 'Yahoo購物中心',
-                'url': 'https://tw.buy.yahoo.com',
-                'api_endpoint': 'https://tw.buy.yahoo.com/search/product',
-                'is_active': True,
-                'search_delay': 1.0,
-                'max_results': 50,
-                'headers': {
-                    'User-Agent': 'Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36',
-                    'Accept': 'application/json',
-                },
-                'search_params': {
-                    'p': '',  # Yahoo使用p參數
-                    'page': 1,
-                }
-            },
-            {
-                'name': 'ETMall東森購物',
-                'url': 'https://www.etmall.com.tw',
-                'api_endpoint': 'https://www.etmall.com.tw/api/search',
-                'is_active': True,
-                'search_delay': 1.0,
-                'max_results': 50,
-                'headers': {
-                    'User-Agent': 'Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36',
-                    'Accept': 'application/json',
-                },
-                'search_params': {
-                    'keyword': '',
-                    'page': 1,
-                }
-            },
-            {
-                'name': '森森購物網',
-                'url': 'https://www.u-mall.com.tw',
-                'api_endpoint': 'https://www.u-mall.com.tw/api/search',
-                'is_active': True,
-                'search_delay': 1.0,
-                'max_results': 50,
-                'headers': {
-                    'User-Agent': 'Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36',
-                    'Accept': 'application/json',
-                },
-                'search_params': {
-                    'q': '',
-                    'page': 1,
-                }
-            },
-        ]
+        if title_tag and price_tag:
+            products.append({
+                "title": title_tag.text.strip(),
+                "price": price_tag.text.strip(),
+                "link": "https://www.momoshop.com.tw" + title_tag.get("href")
+            })
+    return products
 
-        with transaction.atomic():
-            for website_data in default_websites:
-                website, created = Website.objects.get_or_create(
-                    name=website_data['name'],
-                    defaults=website_data
-                )
-                
-                if created:
-                    self.stdout.write(
-                        self.style.SUCCESS(f'成功新增網站: {website.name}')
-                    )
-                else:
-                    self.stdout.write(
-                        self.style.WARNING(f'網站已存在: {website.name}')
-                    )
+if __name__ == "__main__":
+    results = crawl_momo("iphone")
+    for product in results:
+        print(f"Title: {product['title']}, Price: {product['price']}, Link: {product['link']}")
 
-        self.stdout.write(
-            self.style.SUCCESS('預設網站資料設定完成！')
-        )
+def search_products(keyword):
+    if not keyword:
+        return []
+
+    results = momo.scrape_momo(keyword)
+    
+    if not results:
+        return []
+
+    products = []
+    for item in results:
+        products.append({
+            "title": item.get("title", ""),
+            "price": item.get("price", "")
+        })
+    
+    return products
+
+def search_momo(self, keyword, max_results=10):
+        """搜尋 momo 購物網"""
+        try:
+            url = f"https://www.momoshop.com.tw/search/searchShop.jsp?keyword={quote(keyword)}"
+            response = requests.get(url, headers=self.headers, timeout=10)
+            
+            if response.status_code != 200:
+                return []
+            
+            soup = BeautifulSoup(response.text, 'html.parser')
+            products = []
+            
+            # 解析 JSON-LD 結構化數據
+            json_scripts = soup.find_all('script', type='application/ld+json')
+            
+            for script in json_scripts:
+                try:
+                    data = json.loads(script.string)
+                    if (data.get('@type') == 'WebPage' and 
+                        'mainEntity' in data and 
+                        data['mainEntity'].get('@type') == 'ItemList'):
+                        
+                        items = data['mainEntity'].get('itemListElement', [])
+                        
+                        for item in items[:max_results]:
+                            if item.get('@type') == 'Product':
+                                offers = item.get('offers', {})
+                                
+                                # 提取折扣資訊
+                                description = item.get('description', '')
+                                discount_match = re.search(r'折(\d+)', description)
+                                discount = int(discount_match.group(1)) if discount_match else 0
+                                
+                                product = {
+                                    'name': item.get('name', ''),
+                                    'price': float(offers.get('price', 0)),
+                                    'image_url': item.get('image', ''),
+                                    'product_url': item.get('url', ''),
+                                    'site': 'momo',
+                                    'site_name': 'momo購物網',
+                                    'discount': discount,
+                                    'in_stock': 'InStock' in offers.get('availability', ''),
+                                    'currency': 'TWD'
+                                }
+                                
+                                if product['name'] and product['price'] > 0:
+                                    products.append(product)
+                        break
+                except (json.JSONDecodeError, KeyError):
+                    continue
+            
+            return products
+            
+        except Exception as e:
+            print(f"momo 搜尋錯誤: {e}")
+            return []

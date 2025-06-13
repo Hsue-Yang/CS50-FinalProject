@@ -6,100 +6,105 @@
 {% endblock %}
 {% block content %}
   <link rel="stylesheet" href="{% static 'css/style.css' %}" />
-  <section class="hero-banner">
-    <div class="container">
-      <h1 class="display-4 fw-bold mb-4">
+  <div class="container">
+    <!-- 主標題區域 -->
+    <div class="hero-section">
+      <h1 class="display-4 fw-bold mb-3">
         <i class="fas fa-chart-line me-3"></i>比價神器
       </h1>
-      <p class="lead mb-5">智能比價，讓您輕鬆找到最優惠的價格</p>
-      <!-- 精選商品展示 -->
-      {% if featured_products %}
-        <div class="row g-4 mb-5">
-          <div class="col-12">
-            <h3 class="mb-4">
-              <i class="fas fa-star me-2"></i>精選商品
-            </h3>
+      <p class="lead mb-4">輕鬆比較多個購物網站價格，找到最優惠的商品</p>
+      <div class="row justify-content-center">
+        <div class="col-md-8">
+          <div class="input-group input-group-lg">
+            <input type="text"
+                   class="form-control search-input"
+                   id="searchInput"
+                   placeholder="輸入商品名稱，例如：iPhone 15、Nike 球鞋、MacBook...">
+            <button class="btn btn-primary search-btn"
+                    type="button"
+                    onclick="searchProducts()">
+              <i class="fas fa-search me-2"></i>搜尋比價
+            </button>
           </div>
-          {% for product in featured_products %}
-            <div class="col-lg-3 col-md-6">
-              <div class="product-card h-100">
-                {% if product.discount_percentage > 0 %}
-                  <div class="discount-badge">-{{ product.discount_percentage }}%</div>
-                {% endif %}
-                <img src="{{ product.image_url }}"
-                     alt="{{ product.name }}"
-                     class="product-image" />
-                <div class="card-body p-3">
-                  <h6 class="card-title text-truncate">{{ product.name }}</h6>
-                  <div class="d-flex justify-content-between align-items-center">
-                    <div class="price-tag">NT$ {{ product.price }}</div>
-                    <small class="text-muted">{{ product.website.name }}</small>
-                  </div>
-                  {% if product.rating %}
-                    <div class="rating-stars mt-2">
-                      {% for i in "12345" %}
-                        {% if forloop.counter <= product.rating %}
-                          <i class="fas fa-star"></i>
-                        {% else %}
-                          <i class="far fa-star"></i>
-                        {% endif %}
-                      {% endfor %}
-                      <small class="text-muted ms-1">({{ product.reviews_count }})</small>
-                    </div>
-                  {% endif %}
-                </div>
-              </div>
-            </div>
-          {% endfor %}
         </div>
-      {% endif %}
-    </div>
-  </section>
-  <!-- 網站選擇器 -->
-  <div class="container">
-    <div class="website-selector">
-      <h3 class="text-center mb-4">
-        <i class="fas fa-cogs me-2"></i>選擇比價網站
-      </h3>
-      <form id="add-store-form">
-        <input type="text"
-               id="store-input"
-               placeholder="Enter store name (e.g. Amazon)"
-               autocomplete="off" />
-        <button type="submit">Add</button>
-      </form>
-      <div id="selected-stores" class="store-badges">
-        <!-- 已選商城橫幅動態顯示 -->
-        {% for store in selected_stores %}<span class="store-badge">{{ store }}</span>{% endfor %}
       </div>
-      <form id="websiteForm">
-        <div class="row">
-          {% for website in websites %}
-            <div class="col-lg-3 col-md-6 mb-3">
-              <div class="form-check">
-                <input class="form-check-input"
-                       type="checkbox"
-                       value="{{ website.url }}"
-                       id="website{{ website.id }}"
-                       name="websites"
-                       checked />
-                <label class="form-check-label" for="website{{ website.id }}">
-                  <strong>{{ website.name }}</strong>
-                </label>
-              </div>
-            </div>
-          {% endfor %}
-        </div>
-        <!-- 已選擇的網站顯示 -->
-        <div class="mt-4">
-          <h5>目前選擇的網站：</h5>
-          <div id="selectedWebsites" class="mt-2">
-            {% for website in websites %}
-              <span class="website-chip" data-website-id="{{ website.id }}">{{ website.name }}</span>
-            {% endfor %}
+    </div>
+    <!-- 支援網站顯示 -->
+    <div class="supported-sites">
+      <h4 class="text-center mb-4">
+        <i class="fas fa-store me-2"></i>支援的購物網站
+      </h4>
+      <div class="row text-center">
+        <div class="col-6 col-md-3 mb-3">
+          <div class="site-logo">
+            <i class="fab fa-amazon"></i>
           </div>
+          <small>Amazon</small>
         </div>
-      </form>
+        <div class="col-6 col-md-3 mb-3">
+          <div class="site-logo">
+            <i class="fas fa-shopping-cart"></i>
+          </div>
+          <small>PChome</small>
+        </div>
+        <div class="col-6 col-md-3 mb-3">
+          <div class="site-logo">
+            <i class="fas fa-store"></i>
+          </div>
+          <small>蝦皮購物</small>
+        </div>
+        <div class="col-6 col-md-3 mb-3">
+          <div class="site-logo">
+            <i class="fas fa-shopping-bag"></i>
+          </div>
+          <small>momo購物</small>
+        </div>
+      </div>
+    </div>
+    <!-- 網站選擇器 -->
+    <div class="website-selector">
+      <h5 class="mb-3">
+        <i class="fas fa-filter me-2"></i>選擇要比價的網站
+      </h5>
+      <div id="websiteChips">
+        <span class="website-chip" data-site="amazon">
+          <i class="fab fa-amazon me-1"></i>Amazon
+        </span>
+        <span class="website-chip" data-site="pchome">
+          <i class="fas fa-shopping-cart me-1"></i>PChome
+        </span>
+        <span class="website-chip" data-site="shopee">
+          <i class="fas fa-store me-1"></i>蝦皮購物
+        </span>
+        <span class="website-chip" data-site="momo">
+          <i class="fas fa-shopping-bag me-1"></i>momo購物
+        </span>
+      </div>
+      <small class="text-muted">點擊選擇要比價的網站（預設全選）</small>
+    </div>
+    <!-- 載入動畫 -->
+    <div class="loading-spinner" id="loadingSpinner">
+      <div class="spinner-border text-primary"
+           style="width: 3rem;
+                  height: 3rem"
+           role="status">
+        <span class="visually-hidden">載入中...</span>
+      </div>
+      <h5 class="mt-3">正在搜尋商品...</h5>
+      <p class="text-muted">請稍候，我們正在各大購物網站為您尋找最優惠的價格</p>
+    </div>
+    <!-- 搜尋結果 -->
+    <div id="searchResults" class="row g-4 mt-3"></div>
+    <!-- 無結果提示 -->
+    <div class="no-results" id="noResults" style="display: none;">
+      <i class="fas fa-search fa-3x mb-3"></i>
+      <h4>沒有找到相關商品</h4>
+      <p>請嘗試：</p>
+      <ul class="list-unstyled">
+        <li>• 檢查關鍵字拼寫</li>
+        <li>• 使用更簡單的關鍵字</li>
+        <li>• 選擇更多購物網站</li>
+      </ul>
     </div>
   </div>
 {% endblock %}

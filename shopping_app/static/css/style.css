@@ -1,165 +1,161 @@
-/* static/css/style.css */
-body {
-  font-family: "Segoe UI", Arial, sans-serif;
-  background: #f6f8fa;
-  margin: 0;
-  color: #222;
-}
-header {
-  display: flex;
-  justify-content: space-between;
-  align-items: center;
-  background: #fff;
-  padding: 1rem 2rem;
-  box-shadow: 0 2px 8px rgba(0, 0, 0, 0.04);
-}
-.logo {
-  font-size: 1.5rem;
-  font-weight: bold;
-  color: #1e90ff;
-}
-nav a {
-  color: #1e90ff;
-  text-decoration: none;
-  font-weight: 500;
-  margin-left: 1rem;
-}
-.hero {
-  display: flex;
-  align-items: center;
-  justify-content: center;
-  margin: 2rem 0;
-}
-.hero-img {
-  width: 320px;
-  height: 200px;
-  object-fit: cover;
-  border-radius: 12px;
-  margin-right: 2rem;
-  box-shadow: 0 4px 12px rgba(30, 144, 255, 0.08);
-}
-.hero-text h1 {
-  font-size: 2rem;
-  margin-bottom: 0.5rem;
-}
-.store-settings {
-  background: #fff;
-  border-radius: 12px;
-  max-width: 600px;
-  margin: 2rem auto;
-  padding: 2rem;
-  box-shadow: 0 2px 8px rgba(30, 144, 255, 0.06);
-}
-#add-store-form {
-  display: flex;
-  margin-bottom: 1rem;
-}
-#store-input {
-  flex: 1;
-  padding: 0.5rem 1rem;
-  border: 1px solid #d1d5db;
-  border-radius: 6px 0 0 6px;
-  font-size: 1rem;
-}
-#add-store-form button {
-  padding: 0.5rem 1.5rem;
-  border: none;
-  background: #1e90ff;
-  color: #fff;
-  border-radius: 0 6px 6px 0;
-  font-size: 1rem;
-  cursor: pointer;
-  transition: background 0.2s;
-}
-#add-store-form button:hover {
-  background: #176dc1;
-}
-.store-badges {
-  display: flex;
-  flex-wrap: wrap;
-  gap: 0.5rem;
-}
-.store-badge {
-  background: #e3f0fc;
-  color: #1e90ff;
-  border-radius: 16px;
-  padding: 0.4rem 1rem;
-  font-size: 1rem;
-  display: inline-flex;
-  align-items: center;
-  margin-right: 0.5rem;
-  margin-bottom: 0.5rem;
+:root {
+  --primary-color: #007bff;
+  --secondary-color: #6c757d;
+  --success-color: #28a745;
+  --danger-color: #dc3545;
+  --warning-color: #ffc107;
 }
 
-/* 在 style.css 追加 */
-.search-bar-area {
-  max-width: 600px;
-  margin: 2rem auto 1rem auto;
-  display: flex;
-  justify-content: center;
+body {
+  background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+  min-height: 100vh;
+  font-family: "Segoe UI", Tahoma, Geneva, Verdana, sans-serif;
 }
-#search-form {
-  display: flex;
-  width: 100%;
+
+.hero-section {
+  background: rgba(255, 255, 255, 0.1);
+  backdrop-filter: blur(10px);
+  border-radius: 20px;
+  padding: 3rem 2rem;
+  margin: 2rem 0;
+  text-align: center;
+  color: white;
 }
-#product-input {
-  flex: 1;
+
+.search-container {
+  background: white;
+  border-radius: 15px;
+  padding: 2rem;
+  box-shadow: 0 10px 30px rgba(0, 0, 0, 0.1);
+  margin: 2rem 0;
+}
+
+.search-input {
+  border-radius: 25px;
+  padding: 1rem 1.5rem;
+  border: 2px solid #e9ecef;
+  font-size: 1.1rem;
+  transition: all 0.3s ease;
+}
+
+.search-input:focus {
+  border-color: var(--primary-color);
+  box-shadow: 0 0 0 0.2rem rgba(0, 123, 255, 0.25);
+}
+
+.search-btn {
+  border-radius: 25px;
+  padding: 1rem 2rem;
+  font-weight: bold;
+  transition: all 0.3s ease;
+}
+
+.search-btn:hover {
+  transform: translateY(-2px);
+  box-shadow: 0 5px 15px rgba(0, 123, 255, 0.3);
+}
+
+.website-selector {
+  background: white;
+  border-radius: 15px;
+  padding: 1.5rem;
+  margin: 1rem 0;
+  box-shadow: 0 5px 15px rgba(0, 0, 0, 0.1);
+}
+
+.website-chip {
+  display: inline-block;
+  background: var(--primary-color);
+  color: white;
   padding: 0.5rem 1rem;
-  border: 1px solid #d1d5db;
-  border-radius: 6px 0 0 6px;
-  font-size: 1rem;
-}
-#search-form button {
-  padding: 0.5rem 1.5rem;
-  border: none;
-  background: #1e90ff;
-  color: #fff;
-  border-radius: 0 6px 6px 0;
-  font-size: 1rem;
+  margin: 0.25rem;
+  border-radius: 20px;
+  font-size: 0.9rem;
   cursor: pointer;
+  transition: all 0.3s ease;
 }
-.results-cards {
-  display: flex;
-  flex-wrap: wrap;
-  gap: 1.5rem;
-  justify-content: center;
-  margin: 2rem auto;
-  max-width: 900px;
+
+.website-chip:hover {
+  background: #0056b3;
+  transform: translateY(-1px);
 }
-.result-card {
-  background: #fff;
-  border-radius: 12px;
-  box-shadow: 0 2px 8px rgba(30, 144, 255, 0.08);
-  padding: 1rem;
-  width: 220px;
-  display: flex;
-  flex-direction: column;
-  align-items: center;
-  transition: box-shadow 0.2s;
+
+.website-chip.disabled {
+  background: var(--secondary-color);
+  cursor: not-allowed;
 }
-.result-card:hover {
-  box-shadow: 0 6px 18px rgba(30, 144, 255, 0.18);
-}
-.result-card img {
-  width: 120px;
-  height: 120px;
-  object-fit: contain;
-  border-radius: 8px;
+
+.product-card {
+  background: white;
+  border-radius: 15px;
+  overflow: hidden;
+  box-shadow: 0 5px 15px rgba(0, 0, 0, 0.1);
+  transition: all 0.3s ease;
   margin-bottom: 1rem;
 }
-.result-card .price {
-  font-size: 1.2rem;
-  color: #e67e22;
+
+.product-card:hover {
+  transform: translateY(-5px);
+  box-shadow: 0 15px 30px rgba(0, 0, 0, 0.2);
+}
+
+.product-image {
+  width: 100%;
+  height: 200px;
+  object-fit: cover;
+}
+
+.price-tag {
+  font-size: 1.5rem;
   font-weight: bold;
-  margin-bottom: 0.5rem;
+  color: var(--success-color);
 }
-.result-card .store {
-  font-size: 1rem;
-  color: #1e90ff;
-  margin-bottom: 0.5rem;
+
+.discount-badge {
+  position: absolute;
+  top: 10px;
+  right: 10px;
+  background: var(--danger-color);
+  color: white;
+  padding: 0.25rem 0.5rem;
+  border-radius: 10px;
+  font-size: 0.8rem;
+  font-weight: bold;
 }
-.result-card .product-name {
-  font-size: 1rem;
+
+.loading-spinner {
   text-align: center;
-  margin-bottom: 0.5rem;
+  padding: 3rem;
+  display: none;
+}
+
+.rating-stars {
+  color: var(--warning-color);
+}
+
+.no-results {
+  text-align: center;
+  padding: 3rem;
+  color: #666;
+}
+
+.supported-sites {
+  background: rgba(255, 255, 255, 0.1);
+  border-radius: 15px;
+  padding: 1.5rem;
+  margin: 1rem 0;
+  color: white;
+}
+
+.site-logo {
+  width: 60px;
+  height: 60px;
+  background: white;
+  border-radius: 50%;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  margin: 0 auto 0.5rem;
+  font-size: 1.5rem;
+  color: var(--primary-color);
 }
