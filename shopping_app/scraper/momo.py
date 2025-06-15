@@ -2,8 +2,8 @@ import requests
 from bs4 import BeautifulSoup
 import json5 as json
 
-def scrape_momo(keyword):
-    url = f"https://www.momoshop.com.tw/search/searchShop.jsp?keyword={keyword}"
+def scrape_momo(keyword, page=1):
+    url = f"https://www.momoshop.com.tw/search/searchShop.jsp?keyword={keyword}&curPage={page}"
     headers = {"User-Agent": "Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/58.0.3029.110 Safari/537.3"}
     
     try:

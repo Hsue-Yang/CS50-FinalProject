@@ -1,5 +1,4 @@
 from django.shortcuts import render
-from django.core.paginator import Paginator
 from .models import Website
 from django.contrib.auth.forms import UserCreationForm
 from django.shortcuts import redirect
@@ -17,7 +16,6 @@ logger = logging.getLogger(__name__)
 def index(request):
     websites = Website.objects.filter(is_active=True).values('id', 'name', 'url', 'api_endpoint')
     if websites.exists():
-        # 如果資料庫中有網站資料，則使用資料庫中的資料
         websites = list(websites)
     
     context = {
@@ -33,17 +31,18 @@ def search(request):
             data = json.loads(request.body)
             keyword = data.get('keyword', '').strip()
             site = data.get('site', '')
+            page = data.get('page', 1)
             if not keyword:
-                return JsonResponse({'errors': '請輸入關鍵字'})
-            products = concat_products(keyword, site)
+                return JsonResponse({'errors': 'Please enter a keyword'})
+            products = concat_products(keyword, site, page)
             if not products:
-                return JsonResponse({'errors': '沒有找到相關商品'})
+                return JsonResponse({'errors': 'No matching products found'})
             return JsonResponse({'products': products})
         except Exception as e:
             logger.error(f"搜尋時發生錯誤: {e}")
-            return JsonResponse({'errors': '搜尋過程中發生錯誤'})
+            return JsonResponse({'errors': 'An error occurred during the search process'})
         
-    return JsonResponse({'errors': '無效的請求'})
+    return JsonResponse({'errors': 'Invalid request method'})
 
 def login(request):
     if request.method == 'POST':
@@ -54,20 +53,20 @@ def login(request):
             login(request, user)
             return redirect('index')
         else:
-            return render(request, 'login.html', {'errors': '無效的使用者名稱或密碼'})    
+            return render(request, 'login.html', {'errors': 'Invalid username or password'})    
     else:
         return render(request, 'login.html')
 
 def logout(request):
     logout(request)
-    return redirect('login')  # 登出後重定向到首頁
+    return redirect('login')
 
 def register(request):
     if request.method == 'POST':
         form = UserCreationForm(request.POST)
         if form.is_valid():
             form.save()
-            return redirect('login')  # 註冊成功後重定向到登入頁面
+            return redirect('login')
         else:
             return render(request, 'register.html', {'form': form, 'errors':form.errors})
     else:

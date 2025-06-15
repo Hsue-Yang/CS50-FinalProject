@@ -1,2 +1,3 @@
 # CS50-FinalProject
-Django &amp; React Shopping Website
+
+Django &amp; Price Compare Shopping Website
