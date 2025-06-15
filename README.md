@@ -61,26 +61,29 @@ Several challenges arose during the development process:
 ---
 
 ### File Structure
-
+```bash
 CS50-FINALPROJECT/
 │
-├── shopping/ # 主 Django 應用，包含 settings.py、urls.py 等全域設定
-│ ├── settings.py # 設定安裝的應用、時區、語言、靜態檔案路徑等
-│ ├── urls.py # 設定網站的路由導向到各子應用
+├── shopping/                # Django global setting， settings.py、urls.py 
+│   ├── settings.py          # Lang, timezone, application settings
+│   ├── urls.py              # Main route setting
 │
-├── shopping_app/ # 實際比價功能所在的子應用
-│ ├── templates/ # 放置 HTML 模板，例如 search.html、layout.html 等
-│ ├── static/ # 包含 CSS 與 JS 靜態資源
-│ │ ├── css/style.css
-│ │ └── js/search.js
-│ ├── scraper/ # 自訂的爬蟲模組邏輯
-│ │ └── momo_scraper.py, pchome_scraper.py
-│ ├── services.py # 服務層，負責呼叫爬蟲並整合處理資料
-│ ├── views.py # Django View，處理 request 並回傳 response
-│ └── models.py # 尚未大量使用，但可擴充儲存商品或偏好設定
+├── shopping_app/            # Price Compare application
+│   ├── templates/           # HTML (base.html, index.html)
+│   ├── static/              # CSS, JS
+│   │   ├── css/style.css
+│   │   └── js/index.js
+│   ├── scraper/             # scraper module
+│   │   └── momo.py
+|   |   └── pchome.py
+│   ├── services.py          # scraper service
+│   ├── views.py             # Django View，handle request and response
+│   └── models.py            # Define database schema
 │
-├── Pipfile # pipenv 虛擬環境設定
-└── README.md # 本說明文件
+├── Pipfile                  # pipenv virtual env settings
+└── README.md                
+
+```
 
 ---
 
@@ -98,13 +101,13 @@ The two most rewarding parts of this project are:
 
 ### Future Enhancements
 
-- ✅ Add support for more platforms: Amazon, Shopee, Rakuten, etc.
-- ✅ Migrate from SQLite to **PostgreSQL** for better scalability and performance
-- ✅ Store **user preferences**, e.g., default shopping websites
-- ✅ Add **search history and bookmarks**
-- ✅ Introduce **caching and rate limiting** for more efficient data retrieval
-- ✅ Improve **UI/UX**, including product charts and keyword suggestions
-- ✅ Consider integrating with official APIs if available
+-  Add support for more platforms: Amazon, Shopee, Rakuten, etc.
+-  Migrate from SQLite to **PostgreSQL** for better scalability and performance
+-  Store **user preferences**, e.g., default shopping websites
+-  Add **search history and bookmarks**
+-  Introduce **caching and rate limiting** for more efficient data retrieval
+-  Improve **UI/UX**, including product charts and keyword suggestions
+-  Consider integrating with official APIs if available
 
 ---
 
@@ -116,9 +119,6 @@ The two most rewarding parts of this project are:
 4. Log out when done.
 
 > Note: If not logged in, search is still functional but limited in scope.
-
----
-
 ### Final Notes
 
 This project represents a culmination of everything I’ve learned in CS50x: from backend architecture, web scraping, session handling, to frontend interactivity. I’m proud of the practical value this site provides and am excited to continue developing it beyond the course.
