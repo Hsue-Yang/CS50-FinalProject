@@ -4,8 +4,13 @@
 
 #### Description:
 
-Price Compare Website is a shopping price comparison platform developed using Python, Django, HTML, CSS, and JavaScript. The goal is to help users quickly compare product prices across different platforms. Currently, the website supports popular Taiwanese shopping sites momo and PChome, with plans to expand to mainstream e-commerce platforms like Amazon and Shopee in the future.
-This project serves as the final project for CS50x. Through this project, I aimed to gain deeper understanding of Django architecture and backend processing workflows, while combining frontend interactive technologies to create a practical product prototype. Since my ideal company uses Django as their primary web framework, I specifically chose Django over Flask or other lightweight frameworks, hoping to include this project in my job application portfolio.
+**Price Compare Website** is a web-based price comparison tool built using **Python**, **Django**, **HTML**, **CSS**, and **JavaScript**. The goal of this application is to allow users to quickly search and compare product prices across multiple online shopping platforms.
+
+Currently, the site supports two of Taiwan's most popular platforms: **momo** and **PChome**. Future plans include integrating **Amazon**, **Shopee**, and other major e-commerce sites.
+
+This project was developed as the final submission for **CS50x**. By working on this application, I aimed to deepen my understanding of Django’s architecture and strengthen my backend development skills. At the same time, I explored frontend interactivity and real-world use cases like web scraping and UI responsiveness.
+
+Since Django is a popular framework used by many companies I aspire to join, I chose it over alternatives like Flask. The experience gained through this project has been both practical and career-focused.
 
 ### Features
 
@@ -117,8 +122,6 @@ The two most rewarding parts of this project are:
 2. Type a product name into the search field.
 3. Scroll down to view more results as they are automatically loaded.
 4. Log out when done.
-
-> Note: If not logged in, search is still functional but limited in scope.
 ### Final Notes
 
 This project represents a culmination of everything I’ve learned in CS50x: from backend architecture, web scraping, session handling, to frontend interactivity. I’m proud of the practical value this site provides and am excited to continue developing it beyond the course.
