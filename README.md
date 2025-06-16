@@ -44,7 +44,7 @@ I selected **Django** instead of Flask or other minimal frameworks because:
 To create a dynamic and responsive user interface, the following features have been implemented:
 
 - **Infinite Scroll**: Implemented using JavaScript’s `IntersectionObserver` to load more products as the user scrolls.
-- **Loading Spinner**: Displays a spinner while waiting for AJAX responses or scraping data.
+- **Loading Spinner**: Displays a spinner while waiting for responses or scraping data.
 - **Bootstrap Integration**: Ensures mobile responsiveness and a clean layout.
 - **Search Box**: Users can input product names to query results from all supported platforms.
 
@@ -80,7 +80,7 @@ CS50-FINALPROJECT/
 │   │   └── js/index.js
 │   ├── scraper/             # scraper module
 │   │   └── momo.py
-|   |   └── pchome.py
+│   │   └── pchome.py
 │   ├── services.py          # scraper service
 │   ├── views.py             # Django View，handle request and response
 │   └── models.py            # Define database schema
