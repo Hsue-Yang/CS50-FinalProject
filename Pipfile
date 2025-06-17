@@ -8,6 +8,7 @@ django = "*"
 beautifulsoup4 = "*"
 selenium = "*"
 json5 = "*"
+python-dotenv = "*"
 
 [dev-packages]
 
