@@ -25,4 +25,10 @@ urlpatterns = [
     path('shopping/', include('shopping_app.urls')),
     path('shopping/', include('django.contrib.auth.urls')),
     path('', RedirectView.as_view(url='/shopping/', permanent=True)),
-] + static(settings.STATIC_URL, document_root=settings.STATIC_ROOT)
+]
+
+if settings.DEBUG:
+    if settings.STATICFILES_DIRS:
+        urlpatterns += static(settings.STATIC_URL, document_root=settings.STATICFILES_DIRS[0])
+else:
+    urlpatterns += static(settings.STATIC_URL, document_root=settings.STATIC_ROOT)

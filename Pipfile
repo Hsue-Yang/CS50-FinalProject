@@ -6,8 +6,8 @@ name = "pypi"
 [packages]
 django = "*"
 beautifulsoup4 = "*"
-selenium = "*"
 json5 = "*"
+requests = "*"
 python-dotenv = "*"
 
 [dev-packages]
