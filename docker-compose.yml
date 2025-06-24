@@ -1,0 +1,16 @@
+services:
+  web:
+    build: .
+    container_name: price-compare
+    ports:
+      - "8000:8000" # Expose port 8000
+    environment: # Environment variables
+      DJANGO_SECRET_KEY: ${DJANGO_SECRET_KEY}
+      DJANGO_DEBUG: ${DJANGO_DEBUG}
+      DJANGO_ALLOWED_HOSTS: ${DJANGO_ALLOWED_HOSTS}
+    volumes:
+      - ./db.sqlite3:/app/db.sqlite3 # Persist database
+    env_file:
+      - .env # Load environment variables from .env file
+    depends_on:
+      - db
