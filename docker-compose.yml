@@ -13,8 +13,6 @@ services:
       - static_data:/app/staticfiles
     env_file:
       - .env # Load environment variables from .env file
-    depends_on:
-      - db
   nginx:
     image: nginx:latest
     container_name: nginx
