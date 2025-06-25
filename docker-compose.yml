@@ -10,7 +10,21 @@ services:
       DJANGO_ALLOWED_HOSTS: ${DJANGO_ALLOWED_HOSTS}
     volumes:
       - ./db.sqlite3:/app/db.sqlite3 # Persist database
+      - static_data:/app/staticfiles
     env_file:
       - .env # Load environment variables from .env file
     depends_on:
       - db
+  nginx:
+    image: nginx:latest
+    container_name: nginx
+    ports:
+      - "80:80" # Expose port 80 for HTTP
+    volumes:
+      - ./nginx.conf:/etc/nginx/nginx.conf # Nginx configuration file
+      - static_data:/app/staticfiles # Serve static files
+    restart: always
+    depends_on:
+      - web
+volumes:
+  static_data: # Named volume for static files
