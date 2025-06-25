@@ -1,5 +1,6 @@
 # Price Compare Website
 
+#### Deploy on EC2 Document: [Hackmd](https://hackmd.io/XmX3hYZUT4ytrfkLFxK7wA?view)
 #### Video Demo: [https://youtu.be/6odfmqYZdJQ)](https://youtu.be/6odfmqYZdJQ)
 
 #### Description:
