@@ -26,7 +26,7 @@ BASE_DIR = Path(__file__).resolve().parent.parent
 SECRET_KEY = os.getenv('DJANGO_SECRET_KEY', '')
 
 # SECURITY WARNING: don't run with debug turned on in production!
-DEBUG = os.getenv('DJANGO_DEBUG', 'False') == "True"
+DEBUG = os.getenv('DJANGO_DEBUG', 'FALSE') == "TRUE"
 
 ALLOWED_HOSTS = os.getenv("DJANGO_ALLOWED_HOSTS", "").split(",")
 
@@ -74,6 +74,23 @@ TEMPLATES = [
 
 WSGI_APPLICATION = 'shopping.wsgi.application'
 
+if DEBUG:
+    # Development settings
+    CSRF_TRUSTED_ORIGINS = ["http://127.0.0.1", "http://localhost"]
+    CSRF_COOKIE_SECURE = False
+    SECURE_SSL_REDIRECT = False
+    SESSION_COOKIE_SECURE = False
+else:
+    # Production settings
+    CSRF_TRUSTED_ORIGINS = [
+        f"https://{host}" for host in os.getenv("DJANGO_ALLOWED_HOSTS", "").split(",") if host
+    ]
+    CSRF_COOKIE_SECURE = True  # Use secure cookies for CSRF protection in production
+    SECURE_SSL_REDIRECT = True  # Redirect all HTTP requests to HTTPS in production
+    SESSION_COOKIE_SECURE = True  # Use secure cookies for sessions in production
+    SECURE_HSTS_SECONDS = 31536000  # Enable HTTP Strict Transport Security (HSTS) for 1 hour
+    SECURE_HSTS_INCLUDE_SUBDOMAINS = True  # Apply HSTS to all subdomains
+    SECURE_HSTS_PRELOAD = True  # Allow browsers to preload HSTS for your domain
 
 # Database
 # https://docs.djangoproject.com/en/5.2/ref/settings/#databases

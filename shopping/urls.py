@@ -21,9 +21,12 @@ from django.conf import settings
 from django.conf.urls.static import static
 
 urlpatterns = [
-    path('admin/', admin.site.urls),
     path('shopping/', include('shopping_app.urls')),
     path('', RedirectView.as_view(url='/shopping/', permanent=True)),
 ]
+if settings.DEBUG:
+    urlpatterns += [
+        path('admin/', admin.site.urls),
+    ]
 
 urlpatterns += static(settings.STATIC_URL, document_root=settings.STATIC_ROOT)
